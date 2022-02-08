@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TokoController;
+use App\Http\Controllers\SupplierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +20,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('admin', [AdminController::class, 'index'])->name('admin')->middleware('admin');
+Route::get('toko', [TokoController::class, 'index'])->name('toko')->middleware('toko');
+Route::get('supplier', [SupplierController::class, 'index'])->name('supplier')->middleware(['supplier','verified']);
