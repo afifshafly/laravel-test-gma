@@ -1,7 +1,8 @@
 <script>
+    var root_url = <?php echo json_encode(route('produk.get')) ?>;
     $(document).ready(function () {
 
-        // get_company_data()
+        get_produk_data()
 
         $.ajaxSetup({
             headers: {
@@ -9,39 +10,40 @@
                 }
         });
 
-        //Get all company
-        // function get_company_data() {
+        function get_produk_data() {
 
-        //     $.ajax({
-        //         url: root_url,
-        //         type:'GET',
-        //         data: { }
-        //     }).done(function(data){
-        //         table_data_row(data.data)
-        //     });
-        // }
+            $.ajax({
+                url: root_url,
+                type:'GET',
+                data: { }
+            }).done(function(data){
+                table_data_row(data)
+                // console.log(data);
+            });
+        }
 
-        //Company table row
-        // function table_data_row(data) {
+        
+        function table_data_row(data) {
 
-        //     var	rows = '';
+            var	rows = '';
+            // console.log(data);
 
-        //     $.each( data, function( key, value ) {
+            $.each( data, function( key, value ) {
 
-        //         rows = rows + '<tr>';
-        //         rows = rows + '<td>'+value.name+'</td>';
-        //         rows = rows + '<td>'+value.address+'</td>';
-        //         rows = rows + '<td data-id="'+value.id+'">';
-        //                 rows = rows + '<a class="btn btn-sm btn-outline-danger py-0" style="font-size: 0.8em;" id="editCompany" data-id="'+value.id+'" data-toggle="modal" data-target="#modal-id">Edit</a> ';
-        //                 rows = rows + '<a class="btn btn-sm btn-outline-danger py-0" style="font-size: 0.8em;" id="deleteCompany" data-id="'+value.id+'" >Delete</a> ';
-        //                 rows = rows + '</td>';
-        //         rows = rows + '</tr>';
-        //     });
+                rows = rows + '<tr>';
+                rows = rows + '<td>'+value.nama_produk+'</td>';
+                rows = rows + '<td>'+value.stock+'</td>';
+                rows = rows + '<td data-id="'+value.id+'">';
+                        rows = rows + '<a class="btn btn-sm btn-outline-danger py-0" style="font-size: 0.8em;" id="editProduk" data-id="'+value.id+'" data-toggle="modal" data-target="#modal-id">Edit</a> ';
+                        rows = rows + '<a class="btn btn-sm btn-outline-danger py-0" style="font-size: 0.8em;" id="deleteProduk" data-id="'+value.id+'" >Delete</a> ';
+                        rows = rows + '</td>';
+                rows = rows + '</tr>';
+            });
 
-        //     $("tbody").html(rows);
-        // }
+            $("tbody").html(rows);
+        }
 
-        //Insert company data
+        
         $('body').on('click','#tambahProduk', function(){
 
         $('.modal-title').html('Tambah Produk');
@@ -50,60 +52,66 @@
 
         });
 
-        //Save data into database
+       
         $('body').on('click', '#submit', function (event) {
             event.preventDefault()
             var id = $("#produk_id").val();
-            var name = $("#namaProduk").val();
-            var stock = $("#stockProduk").val();
+            var namaProduk = $("#namaProduk").val();
+            var stockProduk = $("#stockProduk").val();
 
             $.ajax({
-            url: "{{ url('produk/store') }}",
+            url: "{{ url('supplier/produk/store') }}",
             type: "POST",
             data: {
                 id : id,
-                nama_produk : name,
-                stock : stock
+                nama_produk : namaProduk,
+                stock : stockProduk
             },
             dataType: 'json',
             success: function (data) {
 
-                $('#companydata').trigger("reset");
+                $('.form-data').trigger("reset");
                 $('#modalProduk').modal('hide');
                 Swal.fire({
-                    position: 'top-end',
+                    position: 'center',
                     icon: 'success',
                     title: 'Success',
                     showConfirmButton: false,
                     timer: 1500
                 })
-                // get_company_data()
+                get_produk_data()
             },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
+            error: function (data) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Gagal Input Data',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
             }
         });
         });
 
         //Edit modal window
-        $('body').on('click', '#editCompany', function (event) {
+        $('body').on('click', '#editProduk', function (event) {
 
             event.preventDefault();
             var id = $(this).data('id');
 
-            $.get(store+'/'+ id+'/edit', function (data) {
+            $.get('../supplier/produk/edit/'+id+'', function (data) {
 
-                $('#userCrudModal').html("Edit company");
-                $('#submit').val("Edit company");
-                $('#modal-id').modal('show');
-                $('#company_id').val(data.data.id);
-                $('#name').val(data.data.name);
-                $('#address').val(data.data.address);
+                $('.modal-title').html('Edit Produk');
+                $('#submit').val("Edit Produk");
+                $('#modalProduk').modal('show');
+                $('#produk_id').val(data.data.id);
+                $('#namaProduk').val(data.data.nama_produk);
+                $('#stockProduk').val(data.data.stock);
             })
         });
 
-        //DeleteCompany
-        $('body').on('click', '#deleteCompany', function (event) {
+        //DeleteProduk
+        $('body').on('click', '#deleteProduk', function (event) {
             if(!confirm("Do you really want to do this?")) {
             return false;
             }
@@ -113,7 +121,7 @@
 
             $.ajax(
                 {
-                url: store+'/'+id,
+                url: '../supplier/produk/delete/'+id+'',
                 type: 'DELETE',
                 data: {
                         id: id
@@ -122,10 +130,10 @@
 
                     Swal.fire(
                     'Remind!',
-                    'Company deleted successfully!',
+                    'Produk Berhasil di hapus',
                     'success'
                     )
-                    get_company_data()
+                    get_produk_data()
                 }
             });
             return false;

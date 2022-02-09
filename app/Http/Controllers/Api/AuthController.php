@@ -16,7 +16,7 @@ class AuthController extends Controller
     use VerifiesEmails;
 
     public $successStatus = 200;
- /**
+    /**
      * Register api
      *
      * @return \Illuminate\Http\Response
@@ -26,8 +26,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',
-            'password' => 'required',
-            'confirm_password' => 'required|same:password',
+            'password' => 'required|string|confirmed'
         ]);
 
         if($validator->fails()){

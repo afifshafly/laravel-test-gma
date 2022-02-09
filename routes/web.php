@@ -34,7 +34,10 @@ Route::group(['middleware' => ['auth','supplier','verified']],function(){
     Route::group(['prefix' => 'supplier'], function () {
 		Route::get('/', [SupplierController::class, 'dashboard'])->name('supplier.dashboard');
         route::get('/produk', [SupplierController::class, 'indexProduk'])->name('produk.index');
-        route::get('/produk/store', [SupplierController::class, 'storeProduk'])->name('produk.store');
+        route::post('/produk/store', [SupplierController::class, 'storeProduk'])->name('produk.store');
+        route::get('/produk/getproduk', [SupplierController::class, 'getProduk'])->name('produk.get');
+        route::get('/produk/edit/{id}', [SupplierController::class, 'editProduk'])->name('produk.edit');
+        route::delete('/produk/delete/{id}', [SupplierController::class, 'destroyProduk'])->name('produk.delete');
 	});
 
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Produk;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Auth;
 
 class SupplierController extends Controller
@@ -75,9 +76,11 @@ class SupplierController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function getProduk(Request $request)
     {
-        //
+        $produk = Produk::where('supplier_id',Auth::user()->id)->latest()->get();
+
+        return $request->ajax() ? response()->json($produk,Response::HTTP_OK) : abort(404);
     }
 
     /**
@@ -86,9 +89,11 @@ class SupplierController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function editProduk($id)
     {
-        //
+        $produk = Produk::find($id);
+
+        return response()->json(['data' => $produk]);
     }
 
     /**
@@ -109,8 +114,14 @@ class SupplierController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroyProduk($id)
     {
-        //
+        $produk = Produk::find($id);
+
+        $produk->delete();
+    
+        return response()->json([
+          'message' => 'Data deleted successfully!'
+        ]);
     }
 }
