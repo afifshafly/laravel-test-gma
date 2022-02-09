@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Produk;
 use Illuminate\Http\Request;
+use Auth;
 
 class SupplierController extends Controller
 {
@@ -17,9 +18,16 @@ class SupplierController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+    public function dashboard()
     {
-        return view('supplier');
+        return view('supplier.dashboard');
+    }
+
+
+    public function indexProduk()
+    {
+        return view('supplier.produk.index');
     }
 
     /**
@@ -38,9 +46,27 @@ class SupplierController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function storeProduk(Request $request)
     {
-        //
+
+        Produk::updateOrCreate(
+            [
+              'id' => $request->id
+            ],
+            [
+                'supplier_id' => Auth::user()->id,
+                'nama_produk' => $request->nama_produk,
+                'stock' => $request->stock
+            ]
+          );
+
+          return response()->json(
+            [
+              'success' => true,
+              'message' => 'Data inserted successfully'
+            ]
+          );
+
     }
 
     /**

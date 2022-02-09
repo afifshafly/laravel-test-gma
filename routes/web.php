@@ -28,17 +28,19 @@ Route::get('toko', [TokoController::class, 'index'])->name('toko')->middleware('
 
 Auth::routes();
 
-Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
-
 
 Route::group(['middleware' => ['auth','supplier','verified']],function(){
 
     Route::group(['prefix' => 'supplier'], function () {
-		Route::get('/', [SupplierController::class, 'index'])->name('supplier.index');
+		Route::get('/', [SupplierController::class, 'dashboard'])->name('supplier.dashboard');
+        route::get('/produk', [SupplierController::class, 'indexProduk'])->name('produk.index');
+        route::get('/produk/store', [SupplierController::class, 'storeProduk'])->name('produk.store');
 	});
 
 });
 
+
+//Argon
 Route::group(['middleware' => 'auth'], function () {
 
 	Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);

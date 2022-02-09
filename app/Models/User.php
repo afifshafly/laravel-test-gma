@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use App\Notifications\VerifyApiEmail;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -42,4 +43,10 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function sendApiEmailVerificationNotification()
+    {
+        $this->notify(new VerifyApiEmail); // my notification
+    }
+
 }

@@ -7,9 +7,15 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use Illuminate\Foundation\Auth\VerifiesEmails;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Support\Facades\Password;
 
 class AuthController extends Controller
 {
+    use VerifiesEmails;
+
+    public $successStatus = 200;
  /**
      * Register api
      *
@@ -36,17 +42,20 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
             'role' => 'toko',
         ]);
+
+        $user->sendApiEmailVerificationNotification();
+
         $success['token'] =  $user->createToken('MyApp')->accessToken;
         $success['name'] =  $user->name;
 
-        if(!$user->save()){
+        if(!$user){
             return response()->json([
                 "message" => "User Gagal Terdaftar"
             ], 401);
         }
 
         return response()->json([
-            "message" => "User registered successfully"
+            "message" => "Please confirm yourself by clicking on verify user button sent to you on your email"
         ], 201);
     }
 
@@ -71,23 +80,25 @@ class AuthController extends Controller
             ];
 
 
-
-            return response()->json([
-                "user"=>$response,
-                // "message" => $user->email,
-                // 'token'  => $user->createToken('MyToken')->accessToken
-            ],200);
+            if($user->email_verified_at !== NULL){
+                return response()->json([
+                    "user"=>$response,
+                    "message" => 'Login Sukses',
+                    // 'token'  => $user->createToken('MyToken')->accessToken
+                ],200);
+            }else{
+                return response()->json(['error'=>'Please Verify Email'], 401);
+            }
+            // return response()->json([
+            //     "user"=>$response,
+            //     // "message" => $user->email,
+            //     // 'token'  => $user->createToken('MyToken')->accessToken
+            // ],200);
         }
         else{
             return response()->json([
                 'message' => 'Invalid Email or Password'
             ],401);
         }
-    }
-
-    public function getUser(){
-        $user = User::all();
-
-        return response()->json($user);
     }
 }

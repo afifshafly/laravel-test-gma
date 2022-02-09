@@ -79,7 +79,7 @@
             <!-- Navigation -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('supplier') ? 'active' : '' }}" href="{{ route('home') }}">
+                    <a class="nav-link {{ Request::is('supplier') ? 'active' : '' }}" href="{{ route('supplier.dashboard') }}">
                         <i class="ni ni-tv-2 text-primary "></i> {{ __('Dashboard') }}
                     </a>
                 </li>
@@ -106,29 +106,8 @@
                 </li> --}}
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('icons') }}">
-                        <i class="ni ni-planet text-blue"></i> {{ __('Icons') }}
-                    </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="{{ route('map') }}">
-                        <i class="ni ni-pin-3 text-orange"></i> {{ __('Maps') }}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('table') }}">
-                      <i class="ni ni-bullet-list-67 text-default"></i>
-                      <span class="nav-link-text">Tables</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="ni ni-circle-08 text-pink"></i> {{ __('Register') }}
-                    </a>
-                </li>
-                <li class="nav-item mb-5 mr-4 ml-4 pl-1 bg-danger" style="position: absolute; bottom: 0;">
-                    <a class="nav-link text-white" href="https://www.creative-tim.com/product/argon-dashboard-pro-laravel" target="_blank">
-                        <i class="ni ni-cloud-download-95"></i> Upgrade to PRO
+                    <a class="nav-link {{ Request::is('supplier/produk') ? 'active' : '' }}" href="{{ route('produk.index') }}">
+                        <i class="ni ni-planet text-blue"></i> {{ __('Produk') }}
                     </a>
                 </li>
             </ul>

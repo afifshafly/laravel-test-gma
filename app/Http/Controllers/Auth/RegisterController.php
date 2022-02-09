@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Auth;
 
 class RegisterController extends Controller
 {
@@ -29,7 +30,26 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected function redirectTo()
+    {
+        switch(Auth::user()->role){
+            case 'admin':
+            $this->redirectTo = '/admin';
+            return $this->redirectTo;
+                break;
+            case 'supplier':
+                $this->redirectTo = '/supplier';
+                return $this->redirectTo;
+                break;
+            case 'toko':
+                $this->redirectTo = '/toko';
+                return $this->redirectTo;
+                break;
+            default:
+                $this->redirectTo = '/login';
+                return $this->redirectTo;
+        }
+    }
 
     /**
      * Create a new controller instance.

@@ -43,7 +43,7 @@
         <script src="{{ asset('argon') }}/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
         @stack('js')
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
         <!-- Argon JS -->
         <script src="{{ asset('argon') }}/js/argon.js?v=1.0.0"></script>
     </body>
