@@ -12,38 +12,27 @@
 
         function get_produk_data() {
 
-            $.ajax({
-                url: root_url,
-                type:'GET',
-                data: { }
-            }).done(function(data){
-                table_data_row(data)
-                // console.log(data);
-            });
-        }
-
-        
-        function table_data_row(data) {
-
-            var	rows = '';
-            // console.log(data);
-
-            $.each( data, function( key, value ) {
-
-                rows = rows + '<tr>';
-                rows = rows + '<td>'+value.nama_produk+'</td>';
-                rows = rows + '<td>'+value.stock+'</td>';
-                rows = rows + '<td data-id="'+value.id+'">';
-                        rows = rows + '<a class="btn btn-sm btn-outline-danger py-0" style="font-size: 0.8em;" id="editProduk" data-id="'+value.id+'" data-toggle="modal" data-target="#modal-id">Edit</a> ';
-                        rows = rows + '<a class="btn btn-sm btn-outline-danger py-0" style="font-size: 0.8em;" id="deleteProduk" data-id="'+value.id+'" >Delete</a> ';
-                        rows = rows + '</td>';
-                rows = rows + '</tr>';
+            $('#tableProduk').DataTable({
+                processing: true,
+                destroy: true,
+                type : "get",
+                ajax: {
+                    url:'../supplier/produk/getproduk',
+                    },
+                columns: [
+                    { data:'nama_produk'},
+                    { data:'stock'},
+                    {data: "id" , render : function ( data, type, row, meta ) {
+                    return type === 'display'  ?
+                        '<button class="btn btn-warning btn-sm" id="editProduk" data-id="'+data+'" ><i class="fa fa-edit"> Edit</i></button><button class="btn btn-danger btn-sm" id="deleteProduk" data-id="'+data+'" ><i class="fa fa-trash"> Delete</i></button>' :
+                        data;
+                    }},
+                ]
             });
 
-            $("tbody").html(rows);
+
         }
 
-        
         $('body').on('click','#tambahProduk', function(){
 
         $('.modal-title').html('Tambah Produk');
@@ -52,7 +41,7 @@
 
         });
 
-       
+
         $('body').on('click', '#submit', function (event) {
             event.preventDefault()
             var id = $("#produk_id").val();
@@ -111,31 +100,61 @@
         });
 
         //DeleteProduk
+
+        // let id = $(this).data('id');
+
+        // swal({
+        //     title: "DATA AKAN TERHAPUS PERMANEN, Apakah Anda Yakin?",
+        //     text: "",
+        //     icon: "warning",
+        //     buttons: true,
+        //     dangerMode: true,
+        // })
+        // .then((willDelete) => {
+        //     if (willDelete) {
+        //         window.location ="../pelatihanAdmin/delete/permanen/"+id+""
+        //     }
+        // });
+
         $('body').on('click', '#deleteProduk', function (event) {
-            if(!confirm("Do you really want to do this?")) {
-            return false;
-            }
 
             event.preventDefault();
             var id = $(this).attr('data-id');
 
-            $.ajax(
-                {
-                url: '../supplier/produk/delete/'+id+'',
-                type: 'DELETE',
-                data: {
-                        id: id
-                },
-                success: function (response){
+            Swal.fire({
+            title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax(
+                        {
+                        url: '../supplier/produk/delete/'+id+'',
+                        type: 'DELETE',
+                        data: {
+                                id: id
+                        },
+                        success: function (response){
 
+                            Swal.fire(
+                            'Remind!',
+                            'Produk Berhasil di hapus',
+                            'success'
+                            )
+                            get_produk_data()
+                        }
+                    });
                     Swal.fire(
-                    'Remind!',
-                    'Produk Berhasil di hapus',
+                    'Deleted!',
+                    'Your file has been deleted.',
                     'success'
                     )
-                    get_produk_data()
                 }
-            });
+            })
             return false;
         });
 

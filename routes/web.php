@@ -32,12 +32,24 @@ Auth::routes();
 Route::group(['middleware' => ['auth','supplier','verified']],function(){
 
     Route::group(['prefix' => 'supplier'], function () {
-		Route::get('/', [SupplierController::class, 'dashboard'])->name('supplier.dashboard');
-        route::get('/produk', [SupplierController::class, 'indexProduk'])->name('produk.index');
-        route::post('/produk/store', [SupplierController::class, 'storeProduk'])->name('produk.store');
-        route::get('/produk/getproduk', [SupplierController::class, 'getProduk'])->name('produk.get');
-        route::get('/produk/edit/{id}', [SupplierController::class, 'editProduk'])->name('produk.edit');
-        route::delete('/produk/delete/{id}', [SupplierController::class, 'destroyProduk'])->name('produk.delete');
+
+        Route::get('/', [SupplierController::class, 'dashboard'])->name('supplier.dashboard');
+        //produk
+        Route::group(['prefix' => 'produk'], function () {
+            route::get('/', [SupplierController::class, 'indexProduk'])->name('produk.index');
+            route::post('/store', [SupplierController::class, 'storeProduk'])->name('produk.store');
+            route::get('/getproduk', [SupplierController::class, 'getProduk'])->name('produk.get');
+            route::get('/edit/{id}', [SupplierController::class, 'editProduk'])->name('produk.edit');
+            route::delete('/delete/{id}', [SupplierController::class, 'destroyProduk'])->name('produk.delete');
+        });
+
+        Route::group(['prefix' => 'order'], function () {
+            route::get('/', [SupplierController::class, 'indexOrder'])->name('order.index');
+            route::get('/getorder', [SupplierController::class, 'getOrder'])->name('get.order');
+            route::get('/approve/{id}', [SupplierController::class, 'approve'])->name('approve.order');
+            // route::get('/getorderdetail/{order_id}', [SupplierController::class, 'getOrderdetail'])->name('get.order.detail');
+        });
+
 	});
 
 });

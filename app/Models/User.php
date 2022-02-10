@@ -49,4 +49,10 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new VerifyApiEmail); // my notification
     }
 
+    public function order()
+    {
+        return $this->hasMany('App\Models\order','toko_id','id');
+    }
+
+
 }

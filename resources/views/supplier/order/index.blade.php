@@ -2,20 +2,20 @@
 
 @section('content')
 @include('layouts.headers.background')
-
 <div class="container-fluid mt--6">
     <div class="row">
       <div class="col">
         <div class="row">
-            <div class="col"><h1 class="text-white text-left">Produk</h1></div>
-            <div class="col d-flex flex-row-reverse"><button class="btn btn-success mb-2 ml-auto" id="tambahProduk">Tambah Produk</button></div>
+            <div class="col"><h1 class="text-white text-left">Order List</h1></div>
         </div>
         <div class="card">
           <table class="table table-bordered" id="tableProduk">
             <thead>
                 <tr>
+                   <th>Nomor Order</th>
+                   <th>Toko</th>
                    <th>Nama Produk</th>
-                   <th>Stock</th>
+                   <th>Qty</th>
                    <th>Action</th>
                 </tr>
             </thead>
@@ -32,8 +32,8 @@
 
 
 @push('js')
-    @include('supplier.produk.js')
+    @include('supplier.order.js')
 @endpush
 
-@include('supplier.produk.modal')
+@include('supplier.order.modal')
 @endsection

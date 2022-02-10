@@ -83,6 +83,7 @@
                         <i class="ni ni-tv-2 text-primary "></i> {{ __('Dashboard') }}
                     </a>
                 </li>
+
                 {{-- <li class="nav-item">
                     <a class="nav-link" href="#navbar-examples" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-examples">
                         <i class="fab fa-laravel" style="color: #f4645f;"></i>
@@ -107,7 +108,12 @@
 
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('supplier/produk') ? 'active' : '' }}" href="{{ route('produk.index') }}">
-                        <i class="ni ni-planet text-blue"></i> {{ __('Produk') }}
+                        <i class="ni ni-app text-blue"></i> {{ __('Produk') }}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('supplier/order') ? 'active' : '' }}" href="{{ route('order.index') }}">
+                        <i class="ni ni-cart text-blue"></i> {{ __('Order List') }}
                     </a>
                 </li>
             </ul>
