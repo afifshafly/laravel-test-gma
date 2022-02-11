@@ -78,11 +78,6 @@
             </form>
             <!-- Navigation -->
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link {{ Request::is('supplier') ? 'active' : '' }}" href="{{ route('supplier.dashboard') }}">
-                        <i class="ni ni-tv-2 text-primary "></i> {{ __('Dashboard') }}
-                    </a>
-                </li>
 
                 {{-- <li class="nav-item">
                     <a class="nav-link" href="#navbar-examples" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-examples">
@@ -105,7 +100,12 @@
                         </ul>
                     </div>
                 </li> --}}
-
+                @if(Auth::user()->role == 'supplier')
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('supplier') ? 'active' : '' }}" href="{{ route('supplier.dashboard') }}">
+                        <i class="ni ni-tv-2 text-primary "></i> {{ __('Dashboard') }}
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('supplier/produk') ? 'active' : '' }}" href="{{ route('produk.index') }}">
                         <i class="ni ni-app text-blue"></i> {{ __('Produk') }}
@@ -116,6 +116,13 @@
                         <i class="ni ni-cart text-blue"></i> {{ __('Order List') }}
                     </a>
                 </li>
+                @elseif ( Auth::user()->role == 'toko')
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('toko') ? 'active' : '' }}" href="{{ route('toko') }}">
+                        <i class="ni ni-tv-2 text-primary "></i> {{ __('Dashboard') }}
+                    </a>
+                </li>
+                @endif
             </ul>
         </div>
     </div>
