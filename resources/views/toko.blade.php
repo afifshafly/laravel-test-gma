@@ -2,9 +2,12 @@
 
 @section('content')
 @include('layouts.headers.background')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12 mt-5">
+<div class="container-fluid mt--6">
+    <div class="row ">
+        <div class="col">
+             <div class="row">
+                <div class="col"><h1 class="text-white text-left">Toko Role</h1></div>
+            </div>
             <div class="card">
                 <div class="card-header">Selamat Datang di Admin Dashboard</div>
 

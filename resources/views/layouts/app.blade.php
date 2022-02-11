@@ -26,7 +26,7 @@
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
-            @if(Auth::user()->email_verified_at)
+            @if(Auth::user()->email_verified_at && Auth::user()->role != 'admin')
                 @include('layouts.navbars.sidebar')
             @endif
         @endauth

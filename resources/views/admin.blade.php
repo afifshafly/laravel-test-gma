@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col">
         <div class="row">
-            <div class="col"><h1 class="text-white text-left">Order List</h1></div>
+            <div class="col"><h1 class="text-white text-left">User List</h1></div>
         </div>
         <div class="card">
           <table class="table table-bordered" id="tableProduk">
